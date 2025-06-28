@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>惠斯通实验AI助手</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-text-size-adjust: 100%;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 1.2rem 0.8rem;
+            width: 100%;
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 10;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 0.4rem;
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            line-height: 1.3;
+            padding: 0 0.5rem;
+            word-break: break-word;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-weight: normal;
+            font-size: clamp(0.875rem, 3.5vw, 1rem);
+            line-height: 1.4;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+        
+        .chat-container {
+            width: 95%;
+            max-width: 800px;
+            height: 70vh;
+            min-height: 400px;
+            max-height: 700px;
+            margin: 1.2rem auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+            flex-grow: 1;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+            background: transparent;
+        }
+        
+        .footer {
+            margin-top: auto;
+            padding: 0.8rem;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.75rem;
+            width: 100%;
+            background: rgba(255,255,255,0.7);
+        }
+
+        /* 兼容性修复 */
+        @supports (-webkit-touch-callout: none) {
+            /* iOS 特定样式 */
+            .chat-container {
+                height: -webkit-fill-available;
+            }
+        }
+
+        /* 横屏优化 */
+        @media screen and (orientation: landscape) {
+            .chat-container {
+                height: 65vh;
+            }
+            .header {
+                padding: 0.8rem;
+            }
+        }
+
+        /* 大屏幕优化 */
+        @media screen and (min-width: 768px) {
+            .header {
+                padding: 1.5rem;
+            }
+            .chat-container {
+                height: 650px;
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>惠斯通实验AI助手</h1>
+        <p class="subtitle">24小时为学生解答问题</p>
+    </div>
+    
+    <div class="chat-container">
+        <iframe src="https://www.chatbase.co/chatbot-iframe/Y5tPj5Q8cedwETqx85QAc" allow="fullscreen"></iframe>
+    </div>
+    
+    <div class="footer">
+  
+    </div>
+</body>
+</html>
