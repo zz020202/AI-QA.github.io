@@ -20,21 +20,26 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: 
+                linear-gradient(135deg, rgba(245,247,250,0.95) 0%, rgba(195,207,226,0.95) 100%),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="50" height="50" x="0" y="0" fill="%23f0f2f5" opacity="0.3"/><rect width="50" height="50" x="50" y="50" fill="%23f0f2f5" opacity="0.3"/></svg>');
+            background-size: 100% 100%, 20px 20px;
             display: flex;
             flex-direction: column;
             -webkit-tap-highlight-color: transparent;
-            position: fixed; /* 防止iOS橡皮筋效果 */
+            position: fixed;
         }
         
         .header {
             text-align: center;
             padding: 12px 8px;
             width: 100%;
-            background: rgba(255,255,255,0.95);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            background: rgba(255,255,255,0.92);
+            box-shadow: 0 1px 6px rgba(0,0,0,0.08);
             flex-shrink: 0;
             z-index: 10;
+            backdrop-filter: blur(2px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
         
         h1 {
@@ -46,10 +51,11 @@
             overflow: hidden;
             text-overflow: ellipsis;
             padding: 0 5px;
+            font-weight: 600;
         }
         
         .subtitle {
-            color: #7f8c8d;
+            color: #5d6d7e;
             font-weight: normal;
             font-size: 13px;
             line-height: 1.4;
@@ -65,6 +71,12 @@
             min-height: 0;
             position: relative;
             overflow: hidden;
+            margin: 8px auto;
+            width: calc(100% - 16px);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            background: rgba(255,255,255,0.85);
+            border: 1px solid rgba(0,0,0,0.05);
         }
         
         iframe {
@@ -73,23 +85,34 @@
             border: none;
             display: block;
             background: transparent;
+            border-radius: 12px;
         }
         
         .footer {
-            padding: 6px;
+            padding: 8px;
             text-align: center;
             color: #7f8c8d;
             font-size: 11px;
             width: 100%;
-            background: rgba(255,255,255,0.8);
+            background: rgba(255,255,255,0.85);
             flex-shrink: 0;
             z-index: 10;
+            backdrop-filter: blur(2px);
+            border-top: 1px solid rgba(0,0,0,0.05);
         }
 
         /* 极端小高度设备优化 */
         @media (max-height: 400px) {
             .header, .footer {
                 display: none;
+            }
+            .chat-container {
+                margin: 0;
+                width: 100%;
+                border-radius: 0;
+            }
+            iframe {
+                border-radius: 0;
             }
         }
     </style>
@@ -105,10 +128,13 @@
     </div>
     
     <div class="footer">
-        © 惠斯通实验教学组
+        © 惠斯通实验教学组 | <span id="current-year"></span>
     </div>
 
     <script>
+        // 设置当前年份
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
         // 确保iframe在iOS设备上正确填充高度
         function adjustLayout() {
             const container = document.querySelector('.chat-container');
@@ -117,19 +143,25 @@
             const windowHeight = window.innerHeight;
             
             // 计算可用高度
-            const availableHeight = windowHeight - header.offsetHeight - footer.offsetHeight;
+            const availableHeight = windowHeight - header.offsetHeight - footer.offsetHeight - 16;
             
             // 设置容器高度
-            container.style.height = availableHeight + 'px';
+            container.style.height = Math.max(availableHeight, 200) + 'px';
             
             // 极端情况下隐藏页眉页脚
             if (windowHeight < 400) {
                 header.style.display = 'none';
                 footer.style.display = 'none';
+                container.style.margin = '0';
+                container.style.width = '100%';
+                container.style.borderRadius = '0';
                 container.style.height = windowHeight + 'px';
             } else {
                 header.style.display = '';
                 footer.style.display = '';
+                container.style.margin = '8px auto';
+                container.style.width = 'calc(100% - 16px)';
+                container.style.borderRadius = '12px';
             }
         }
         
@@ -137,14 +169,12 @@
         adjustLayout();
         
         // 屏幕变化时重新调整
-        window.addEventListener('resize', adjustLayout);
+        const resizeObserver = new ResizeObserver(adjustLayout);
+        resizeObserver.observe(document.body);
+        
         window.addEventListener('orientationchange', function() {
             setTimeout(adjustLayout, 300);
         });
-        
-        // iOS Safari工具栏显示/隐藏时调整
-        window.addEventListener('focus', adjustLayout);
-        window.visualViewport.addEventListener('resize', adjustLayout);
     </script>
 </body>
 </html>
