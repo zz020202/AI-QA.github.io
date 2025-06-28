@@ -2,81 +2,57 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>惠斯通实验AI助手</title>
     <style>
-        * {
-            box-sizing: border-box;
+        body {
+            font-family: 'Arial', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             margin: 0;
             padding: 0;
-            -webkit-text-size-adjust: 100%;
-        }
-        
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: 
-                linear-gradient(135deg, rgba(245,247,250,0.95) 0%, rgba(195,207,226,0.95) 100%),
-                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="50" height="50" x="0" y="0" fill="%23f0f2f5" opacity="0.3"/><rect width="50" height="50" x="50" y="50" fill="%23f0f2f5" opacity="0.3"/></svg>');
-            background-size: 100% 100%, 20px 20px;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            -webkit-tap-highlight-color: transparent;
-            position: fixed;
+            align-items: center;
+            overflow-x: hidden;
         }
         
         .header {
             text-align: center;
-            padding: 12px 8px;
+            padding: 1.5rem 1rem;
             width: 100%;
-            background: rgba(255,255,255,0.92);
-            box-shadow: 0 1px 6px rgba(0,0,0,0.08);
-            flex-shrink: 0;
+            background: rgba(255,255,255,0.85);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
             z-index: 10;
-            backdrop-filter: blur(2px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
         
         h1 {
             color: #2c3e50;
-            margin: 0;
-            font-size: 18px;
-            line-height: 1.3;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            padding: 0 5px;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
             font-weight: 600;
         }
         
         .subtitle {
             color: #5d6d7e;
             font-weight: normal;
-            font-size: 13px;
-            line-height: 1.4;
-            margin-top: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-size: 1rem;
+            margin-top: 0.3rem;
         }
         
         .chat-container {
-            flex: 1;
-            width: 100%;
-            min-height: 0;
-            position: relative;
-            overflow: hidden;
-            margin: 8px auto;
-            width: calc(100% - 16px);
+            width: 92%;
+            max-width: 800px;
+            height: 65vh;
+            min-height: 400px;
+            margin: 1.5rem auto;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            background: rgba(255,255,255,0.85);
-            border: 1px solid rgba(0,0,0,0.05);
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            background: white;
+            position: relative;
+            flex-grow: 1;
         }
         
         iframe {
@@ -84,35 +60,74 @@
             height: 100%;
             border: none;
             display: block;
-            background: transparent;
-            border-radius: 12px;
         }
         
         .footer {
-            padding: 8px;
+            margin-top: auto;
+            padding: 1rem;
             text-align: center;
             color: #7f8c8d;
-            font-size: 11px;
+            font-size: 0.85rem;
             width: 100%;
-            background: rgba(255,255,255,0.85);
-            flex-shrink: 0;
-            z-index: 10;
-            backdrop-filter: blur(2px);
-            border-top: 1px solid rgba(0,0,0,0.05);
+            background: rgba(255,255,255,0.8);
         }
 
-        /* 极端小高度设备优化 */
-        @media (max-height: 400px) {
-            .header, .footer {
-                display: none;
+        /* 加载动画 */
+        .loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            transition: opacity 0.3s ease;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(58, 90, 120, 0.2);
+            border-radius: 50%;
+            border-top-color: #3a5a78;
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 移动端优化 */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1.2rem 0.8rem;
             }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .subtitle {
+                font-size: 0.9rem;
+            }
+            
             .chat-container {
-                margin: 0;
-                width: 100%;
-                border-radius: 0;
+                width: 95%;
+                height: 70vh;
+                margin: 1rem auto;
             }
-            iframe {
-                border-radius: 0;
+        }
+
+        /* 超小屏幕优化 */
+        @media (max-height: 600px) {
+            .chat-container {
+                height: 75vh;
+                min-height: 300px;
             }
         }
     </style>
@@ -124,57 +139,37 @@
     </div>
     
     <div class="chat-container">
-        <iframe src="https://www.chatbase.co/chatbot-iframe/Y5tPj5Q8cedwETqx85QAc" allow="fullscreen"></iframe>
+        <div class="loader">
+            <div class="spinner"></div>
+            <p>正在加载AI助手...</p>
+        </div>
+        <iframe src="https://www.chatbase.co/chatbot-iframe/Y5tPj5Q8cedwETqx85QAc"></iframe>
     </div>
     
     <div class="footer">
-        © 惠斯通实验教学组 | <span id="current-year"></span>
+        © 惠斯通实验教学组 <span id="current-year"></span>
     </div>
 
     <script>
         // 设置当前年份
         document.getElementById('current-year').textContent = new Date().getFullYear();
         
-        // 确保iframe在iOS设备上正确填充高度
-        function adjustLayout() {
-            const container = document.querySelector('.chat-container');
-            const header = document.querySelector('.header');
-            const footer = document.querySelector('.footer');
-            const windowHeight = window.innerHeight;
-            
-            // 计算可用高度
-            const availableHeight = windowHeight - header.offsetHeight - footer.offsetHeight - 16;
-            
-            // 设置容器高度
-            container.style.height = Math.max(availableHeight, 200) + 'px';
-            
-            // 极端情况下隐藏页眉页脚
-            if (windowHeight < 400) {
-                header.style.display = 'none';
-                footer.style.display = 'none';
-                container.style.margin = '0';
-                container.style.width = '100%';
-                container.style.borderRadius = '0';
-                container.style.height = windowHeight + 'px';
-            } else {
-                header.style.display = '';
-                footer.style.display = '';
-                container.style.margin = '8px auto';
-                container.style.width = 'calc(100% - 16px)';
-                container.style.borderRadius = '12px';
+        // iframe加载完成后隐藏加载动画
+        document.querySelector('iframe').onload = function() {
+            document.querySelector('.loader').style.opacity = '0';
+            setTimeout(function() {
+                document.querySelector('.loader').style.display = 'none';
+            }, 300);
+        };
+        
+        // 防止iframe加载失败
+        setTimeout(function() {
+            if(document.querySelector('.loader').style.display !== 'none') {
+                document.querySelector('.loader').innerHTML = 
+                    '<p>加载遇到问题，请检查网络连接</p>' +
+                    '<button onclick="window.location.reload()" style="padding: 8px 16px; background: #3a5a78; color: white; border: none; border-radius: 4px; margin-top: 10px;">重新加载</button>';
             }
-        }
-        
-        // 初始调整
-        adjustLayout();
-        
-        // 屏幕变化时重新调整
-        const resizeObserver = new ResizeObserver(adjustLayout);
-        resizeObserver.observe(document.body);
-        
-        window.addEventListener('orientationchange', function() {
-            setTimeout(adjustLayout, 300);
-        });
+        }, 10000); // 10秒后检查
     </script>
 </body>
 </html>
